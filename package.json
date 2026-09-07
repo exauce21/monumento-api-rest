@@ -1,0 +1,21 @@
+{
+  "name": "monumento-api-rest",
+  "version": "1.0.0",
+  "description": "API REST monumento en typescript",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/exauce21/monumento-api-rest.git"
+  },
+  "keywords": [],
+  "author": "Exauce21 <yberose@gmail.com>",
+  "license": "ISC",
+  "type": "module",
+  "bugs": {
+    "url": "https://github.com/exauce21/monumento-api-rest/issues"
+  },
+  "homepage": "https://github.com/exauce21/monumento-api-rest#readme"
+}
