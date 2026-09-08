@@ -12,6 +12,8 @@ export async function initDatabase(): Promise<void> {
   try {
     await sequelize.authenticate();
     console.log("Connexion à la base de données réussie.");
+    await sequelize.sync({ alter: true });
+    console.log("Tables synchronisées.");
   } catch (error) {
     console.error("Erreur lors de la connexion à la base de données :", error);
   }
