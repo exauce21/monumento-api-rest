@@ -1,0 +1,4 @@
+INSERT INTO monuments (title, country, city, buildYear, picture, description, createdAt, updateAt) VALUES
+('Tour Eiffel', 'France', 'Paris', 1889, 'https://github.com/ehformation/monumento/blob/main/images/tour-eiffel.png?raw=true', 'Symbole emblématique de Paris, construite pour l''exposition universelle de 1889.', NOW(), NOW()),
+('Statue de la Liberté', 'États-Unis', 'New York', 1886, 'https://github.com/ehformation/monumento/blob/main/images/statue-liberte.png?raw=true', 'Offerte par la France, symbole de liberté à l''entrée du port de New York.', NOW(), NOW()),
+('Colisée', 'Italie', 'Rome', 80, 'https://github.com/ehformation/monumento/blob/main/images/colisee.png?raw=true', 'Ancien amphithéâtre romain, célèbre pour ses combats de gladiateurs.', NOW(), NOW());

@@ -2,26 +2,16 @@
   "name": "monumento-api-rest",
   "version": "1.0.0",
   "description": "API REST monumento en typescript",
-  "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "tsx watch src/server.ts",
+    "dev": "tsx  watch --env-file=.env src/server.ts",
     "build": "tsc",
     "start": "node dist/server.js",
     "typecheck": "tsc --noEmit"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/exauce21/monumento-api-rest.git"
-  },
   "keywords": [],
-  "author": "Exauce21 <yberose@gmail.com>",
+  "author": "",
   "license": "ISC",
   "type": "module",
-  "bugs": {
-    "url": "https://github.com/exauce21/monumento-api-rest/issues"
-  },
-  "homepage": "https://github.com/exauce21/monumento-api-rest#readme",
   "devDependencies": {
     "@types/express": "^5.0.6",
     "@types/node": "^26.4.1",
@@ -29,7 +19,6 @@
     "typescript": "^7.0.2"
   },
   "dependencies": {
-    "dotenv": "^17.4.2",
     "express": "^5.2.1",
     "mysql2": "^3.24.4",
     "sequelize": "^6.37.8"
