@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <title>Monumento — Chat (Guide)</title>
+  <style>
+  body { font-family: system-ui, sans-serif; max-width: 640px; margin: 40px auto; }
+  #messages { min-height: 300px; display: flex; flex-direction: column; gap: 10px; }
+  .bubble { max-width: 70%; padding: 8px 12px; border-radius: 14px; background: #eee; }
+  .bubble .who { font-size: 12px; color: #666; margin-bottom: 2px; }
+  .theirs { align-self: flex-start; border-bottom-left-radius: 4px; }
+  .mine { align-self: flex-end; background: #dbe7ff; border-bottom-right-radius: 4px; }
+  .guide { background: #e3efec; border-left: 4px solid #3f7f77; }
+  .guide .who { color: #3f7f77; font-weight: 600; }
+  .mine.guide { background: #cfe5df; }
+  #composer { display: flex; gap: 8px; margin-top: 16px; }
+  #text { flex: 1; padding: 10px; }
+</style>
+</head>
+<body>
+    <h1>Monumento — Chat (Guide)    </h1>
+    <p id="presence"></p>
+    <div id="messages"></div>
+    <form id="composer">
+        <input id="text" placeholder="Votre question…" autocomplete="off" required>
+        <button type="submit">Envoyer</button>
+    </form>
+    <script src="https://cdn.socket.io/4.8.1/socket.io.min.js"></script>
+    <script>
+        const TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsInVzZXJuYW1lIjoiZXJpYyIsInJvbGUiOiJndWlkZSIsImlhdCI6MTc4OTA0MzQzNSwiZXhwIjoxNzg5MDQ1MjM1fQ.rSFuGUTMCM2KIbvBZSfCFpgOx9r4Qgbqo2tZsTDjLac";
+
+        const ME = JSON.parse(atob(TOKEN.split(".")[1])).username;
+
+        const socket = io("http://localhost:3000", { auth: { token: TOKEN } });
+
+        socket.on("connect", () => console.log("Connecté"));
+        socket.on("connect_error", (err) => console.error("Refusé :", err.message));
+
+        socket.on("chat:message", (message) => {
+        const el = document.createElement("div");
+        el.className = "bubble " + (message.from === ME ? "mine" : "theirs") + (message.role === "guide" ? " guide" : "");
+
+        const who = document.createElement("div");
+        who.className = "who";
+        who.textContent = message.role === "guide" ? `${message.from} (guide)` : message.from;
+
+        const text = document.createElement("div");
+        text.textContent = message.text;
+
+        el.append(who, text);
+        document.getElementById("messages").appendChild(el);
+        el.scrollIntoView();
+        });
+
+        document.getElementById("composer").addEventListener("submit", (event) => {
+            event.preventDefault();
+            const input = document.getElementById("text");
+            socket.emit("chat:send", { text: input.value });
+            input.value = "";
+        });
+        socket.on("chat:error", (message) => alert(message));
+    </script>
+</body>
+</html>
