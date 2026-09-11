@@ -1,5 +1,14 @@
-import { DataTypes, Model, type InferAttributes, type InferCreationAttributes, type CreationOptional } from 'sequelize'
+import { 
+  DataTypes, 
+  Model, 
+  type InferAttributes, 
+  type InferCreationAttributes, 
+    type CreationOptional,
+    type HasManyGetAssociationsMixin,
+    type HasManyCreateAssociationMixin,
+} from 'sequelize'
 import { sequelize } from '../db/sequelize.js';
+import type { Anecdote } from './anecdote.model.js';
 
 export class Monument extends Model<InferAttributes<Monument>, InferCreationAttributes<Monument>> {
     declare id: CreationOptional<number>;
@@ -11,6 +20,8 @@ export class Monument extends Model<InferAttributes<Monument>, InferCreationAttr
     declare description: string | null;
     declare createdAt: CreationOptional<Date>;
     declare updatedAt: CreationOptional<Date>;
+        declare getAnecdotes: HasManyGetAssociationsMixin<Anecdote>;
+        declare createAnecdote: HasManyCreateAssociationMixin<Anecdote, "monumentId">;
 }
 
 Monument.init({
