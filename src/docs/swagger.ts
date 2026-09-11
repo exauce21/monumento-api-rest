@@ -43,6 +43,39 @@ const spec = swaggerJsdoc({
             refreshToken: { type: "string" },
           },
         },
+        Anecdote: {
+          type: "object",
+          properties: {
+            id: { type: "integer", example: 1 },
+            content: {
+              type: "string",
+              minLength: 10,
+              maxLength: 2000,
+              example: "La première pierre du monument a été posée en présence du maire.",
+            },
+            monumentId: { type: "integer", example: 15 },
+          },
+        },
+        AnecdoteInput: {
+          type: "object",
+          required: ["content"],
+          properties: {
+            content: {
+              type: "string",
+              minLength: 10,
+              maxLength: 2000,
+              example: "La première pierre du monument a été posée en présence du maire.",
+            },
+          },
+        },
+        Favorite: {
+          type: "object",
+          properties: {
+            id: { type: "integer", example: 1 },
+            userId: { type: "integer", example: 3 },
+            monumentId: { type: "integer", example: 15 },
+          },
+        },
         Monument: {
           type: "object",
           properties: {

@@ -15,11 +15,14 @@
   .mine.guide { background: #cfe5df; }
   #composer { display: flex; gap: 8px; margin-top: 16px; }
   #text { flex: 1; padding: 10px; }
+    #monument-notice { display: none; margin: 14px 0; padding: 12px 14px; border-left: 4px solid #d35d3f; border-radius: 5px; color: #7e3325; background: #fff0e9; }
+    #monument-notice.visible { display: block; }
 </style>
 </head>
 <body>
     <h1>Monumento — Chat (Guide)    </h1>
     <p id="presence"></p>
+    <div id="monument-notice" role="status" aria-live="polite"></div>
     <div id="messages"></div>
     <form id="composer">
         <input id="text" placeholder="Votre question…" autocomplete="off" required>
@@ -35,6 +38,12 @@
 
         socket.on("connect", () => console.log("Connecté"));
         socket.on("connect_error", (err) => console.error("Refusé :", err.message));
+
+        socket.on("monument:created", (monument) => {
+            const notice = document.getElementById("monument-notice");
+            notice.textContent = `Nouveau monument créé : ${monument.title}`;
+            notice.classList.add("visible");
+        });
 
         socket.on("chat:message", (message) => {
         const el = document.createElement("div");

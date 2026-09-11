@@ -160,5 +160,61 @@ monumentRouter.put("/:id", monumentController.update);
  *         description: Aucun monument avec cet identifiant
  */
 monumentRouter.delete("/:id", monumentController.remove);
+
+/**
+ * @swagger
+ * /monuments/{id}/anecdotes:
+ *   get:
+ *     summary: Liste les anecdotes d'un monument
+ *     tags: [Anecdotes]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema: { type: integer, minimum: 1 }
+ *     responses:
+ *       200:
+ *         description: Liste des anecdotes
+ *         content:
+ *           application/json:
+ *             schema:
+ *               allOf:
+ *                 - $ref: '#/components/schemas/ApiResponse'
+ *                 - properties:
+ *                     data:
+ *                       type: array
+ *                       items: { $ref: '#/components/schemas/Anecdote' }
+ *       404:
+ *         description: Monument introuvable
+ */
 monumentRouter.get("/:id/anecdotes", anecdoteController.findAllByMonument);
+
+/**
+ * @swagger
+ * /monuments/{id}/anecdotes:
+ *   post:
+ *     summary: Ajoute une anecdote à un monument
+ *     tags: [Anecdotes]
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema: { type: integer, minimum: 1 }
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema: { $ref: '#/components/schemas/AnecdoteInput' }
+ *     responses:
+ *       201:
+ *         description: Anecdote créée
+ *       400:
+ *         description: Contenu absent ou invalide
+ *       404:
+ *         description: Monument introuvable
+ */
 monumentRouter.post("/:id/anecdotes", anecdoteController.create);
