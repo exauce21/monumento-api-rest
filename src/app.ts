@@ -5,6 +5,7 @@ import { visitCounter } from "./middlewares/visit-counter.js";
 import { errorHandler } from "./middlewares/error-handler.js";
 import { requireAuth } from "./middlewares/require-auth.js";
 import { monumentRouter } from "./routes/monument.routes.js";
+import { anecdoteRouter } from "./routes/anecdote.routes.js";
 import { authRouter } from "./routes/auth.routes.js";
 import cors from "cors";
 import helmet from "helmet";
@@ -38,6 +39,7 @@ export function createApp() {
 
   app.use("/auth", authRouter);
   app.use("/monuments", requireAuth, monumentRouter);
+  app.use("/anecdotes", requireAuth, anecdoteRouter);
 
   // Erreurs (toujours en dernier)
   app.use(errorHandler);

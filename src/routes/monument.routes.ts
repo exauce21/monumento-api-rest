@@ -1,5 +1,6 @@
 import { Router } from "express";
 import * as monumentController from "../controllers/monument.controller.js";
+import * as anecdoteController from "../controllers/anecdote.controller.js";
 
 export const monumentRouter = Router();
 
@@ -159,3 +160,5 @@ monumentRouter.put("/:id", monumentController.update);
  *         description: Aucun monument avec cet identifiant
  */
 monumentRouter.delete("/:id", monumentController.remove);
+monumentRouter.get("/:id/anecdotes", anecdoteController.findAllByMonument);
+monumentRouter.post("/:id/anecdotes", anecdoteController.create);
