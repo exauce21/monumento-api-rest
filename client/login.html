@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Monumento — Connexion</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #182329;
+      --muted: #68757a;
+      --paper: #f5f1e9;
+      --panel: #fffdf8;
+      --line: #d9d7cc;
+      --accent: #d35d3f;
+      --accent-dark: #9f3e2b;
+      --teal: #245d5b;
+      --shadow: 0 24px 70px rgba(31, 49, 45, .14);
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      min-height: 100vh;
+      margin: 0;
+      color: var(--ink);
+      background: var(--paper);
+      font-family: "DM Sans", sans-serif;
+    }
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      background-image: linear-gradient(rgba(36, 93, 91, .06) 1px, transparent 1px), linear-gradient(90deg, rgba(36, 93, 91, .06) 1px, transparent 1px);
+      background-size: 42px 42px;
+      mask-image: linear-gradient(to bottom, black, transparent 90%);
+    }
+    .page { width: min(1120px, calc(100% - 40px)); min-height: 100vh; margin: auto; display: grid; place-items: center; padding: 40px 0; }
+    .layout { width: 100%; display: grid; grid-template-columns: 1fr 440px; align-items: center; gap: clamp(40px, 8vw, 120px); }
+    .brand { display: flex; align-items: center; gap: 12px; color: var(--teal); font-weight: 700; letter-spacing: .08em; text-transform: uppercase; font-size: .78rem; }
+    .mark { width: 34px; height: 34px; display: grid; place-items: center; color: white; background: var(--accent); border-radius: 8px 8px 8px 2px; font: 1.2rem Georgia, serif; }
+    h1, h2 { margin: 0; font-family: "Fraunces", Georgia, serif; letter-spacing: 0; }
+    h1 { max-width: 520px; margin-top: 28px; font-size: clamp(3rem, 6vw, 5.8rem); line-height: .94; font-weight: 600; }
+    .intro { max-width: 470px; margin: 22px 0 0; color: var(--muted); line-height: 1.65; font-size: 1.05rem; }
+    .note { display: flex; gap: 10px; margin-top: 42px; color: var(--teal); font-size: .87rem; }
+    .note::before { content: ""; width: 28px; height: 2px; margin-top: .65em; flex: 0 0 auto; background: var(--accent); }
+    .card { padding: 34px; border: 1px solid rgba(217, 215, 204, .9); border-radius: 12px; background: rgba(255, 253, 248, .92); box-shadow: var(--shadow); animation: rise .5s both; }
+    .eyebrow { margin-bottom: 8px; color: var(--accent-dark); font-size: .72rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+    h2 { font-size: 2rem; }
+    .card-copy { margin: 10px 0 24px; color: var(--muted); font-size: .9rem; line-height: 1.5; }
+    label { display: block; margin: 16px 0 7px; color: var(--muted); font-size: .78rem; font-weight: 700; letter-spacing: .04em; }
+    input { width: 100%; padding: 13px 14px; border: 1px solid var(--line); border-radius: 7px; outline: none; color: var(--ink); background: white; font: inherit; transition: border-color .2s, box-shadow .2s; }
+    input:focus { border-color: var(--teal); box-shadow: 0 0 0 3px rgba(36, 93, 91, .12); }
+    .password-wrap { position: relative; }
+    .password-wrap input { padding-right: 66px; }
+    .toggle { position: absolute; top: 50%; right: 8px; transform: translateY(-50%); border: 0; padding: 5px 7px; color: var(--teal); background: transparent; font: inherit; font-size: .75rem; font-weight: 700; cursor: pointer; }
+    .submit { width: 100%; margin-top: 24px; padding: 13px 16px; border: 0; border-radius: 7px; color: white; background: var(--accent); font: inherit; font-weight: 700; cursor: pointer; transition: transform .2s, background .2s; }
+    .submit:hover { background: var(--accent-dark); transform: translateY(-1px); }
+    .submit:disabled { cursor: wait; opacity: .65; transform: none; }
+    #feedback { min-height: 22px; margin: 14px 0 0; color: var(--accent-dark); font-size: .84rem; line-height: 1.4; }
+    .footer { margin-top: 24px; color: var(--muted); font-size: .78rem; text-align: center; }
+    @keyframes rise { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+    @media (max-width: 760px) { .page { width: min(100% - 24px, 560px); } .layout { grid-template-columns: 1fr; gap: 30px; } .intro { font-size: .98rem; } .note { margin-top: 24px; } .card { padding: 24px; } }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <div class="layout">
+      <section>
+        <div class="brand"><span class="mark">M</span> Archives Monumento</div>
+        <h1>Retrouvez les lieux qui comptent.</h1>
+        <p class="intro">Connectez-vous à votre espace pour explorer la collection et publier de nouveaux monuments.</p>
+        <div class="note">Votre session reste privée et sécurisée par un jeton d’accès.</div>
+      </section>
+
+      <section class="card" aria-labelledby="login-title">
+        <div class="eyebrow">Espace membre</div>
+        <h2 id="login-title">Se connecter</h2>
+        <p class="card-copy">Entrez vos identifiants pour accéder au catalogue.</p>
+        <form id="loginForm">
+          <label for="username">Nom d’utilisateur</label>
+          <input id="username" name="username" type="text" minlength="3" maxlength="25" autocomplete="username" placeholder="Votre nom d’utilisateur" required>
+          <label for="password">Mot de passe</label>
+          <div class="password-wrap">
+            <input id="password" name="password" type="password" minlength="6" autocomplete="current-password" placeholder="Votre mot de passe" required>
+            <button class="toggle" id="togglePassword" type="button">Afficher</button>
+          </div>
+          <button class="submit" id="submitButton" type="submit">Ouvrir ma session</button>
+          <div id="feedback" role="alert" aria-live="polite"></div>
+        </form>
+        <div class="footer">Monumento · Collection et mémoire des lieux</div>
+      </section>
+    </div>
+  </main>
+
+  <script>
+    const API_URL = "http://localhost:3000";
+    const form = document.getElementById("loginForm");
+    const username = document.getElementById("username");
+    const password = document.getElementById("password");
+    const feedback = document.getElementById("feedback");
+    const submitButton = document.getElementById("submitButton");
+
+    function showError(message = "") {
+      feedback.textContent = message;
+    }
+
+    document.getElementById("togglePassword").addEventListener("click", event => {
+      const button = event.currentTarget;
+      const visible = password.type === "text";
+      password.type = visible ? "password" : "text";
+      button.textContent = visible ? "Afficher" : "Masquer";
+    });
+
+    form.addEventListener("submit", async event => {
+      event.preventDefault();
+      showError("");
+      submitButton.disabled = true;
+      submitButton.textContent = "Connexion…";
+
+      try {
+        const response = await fetch(`${API_URL}/auth/login`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ username: username.value.trim(), password: password.value }),
+        });
+        const payload = await response.json().catch(() => ({}));
+        if (!response.ok) throw new Error(payload.message || "Impossible de se connecter.");
+
+        localStorage.setItem("monumento_access_token", payload.data.accessToken);
+        if (payload.data.refreshToken) localStorage.setItem("monumento_refresh_token", payload.data.refreshToken);
+        window.location.href = "monuments.html";
+      } catch (error) {
+        showError(error.message || "Une erreur est survenue. Vérifiez vos identifiants.");
+        submitButton.disabled = false;
+        submitButton.textContent = "Ouvrir ma session";
+      }
+    });
+  </script>
+</body>
+</html>

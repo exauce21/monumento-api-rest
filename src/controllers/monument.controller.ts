@@ -2,6 +2,7 @@ import type { RequestHandler } from 'express';
 import { Monument } from '../models/monument.model.js';
 import { notFoundError, badRequestError } from '../errors/http-error.js';
 import { Op, WhereOptions } from 'sequelize';
+import { emitMonumentCreated } from '../socket/broadcast.js';
 
 const SORTABLE = ["title", "buildYear", "createdAt"] as const;
 type Sortable = (typeof SORTABLE)[number];
@@ -57,6 +58,12 @@ export const findById: RequestHandler = async (req, res) => {
 
 export const create: RequestHandler = async (req, res) => {
     const newMonument = await Monument.create(req.body);
+    emitMonumentCreated({
+        id: newMonument.id,
+        title: newMonument.title,
+        description: newMonument.description,
+        createdAt: newMonument.createdAt,
+    });
     res.status(201).json({ message: 'Monument créé', data: newMonument });
 };
 

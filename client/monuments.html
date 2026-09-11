@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Monumento — Collection</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #182329;
+      --muted: #68757a;
+      --paper: #f5f1e9;
+      --panel: #fffdf8;
+      --line: #d9d7cc;
+      --accent: #d35d3f;
+      --accent-dark: #9f3e2b;
+      --teal: #245d5b;
+      --shadow: 0 18px 45px rgba(31, 49, 45, .10);
+    }
+
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      color: var(--ink);
+      background: var(--paper);
+      font-family: "DM Sans", sans-serif;
+      min-height: 100vh;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      opacity: .38;
+      background-image: linear-gradient(rgba(36, 93, 91, .06) 1px, transparent 1px), linear-gradient(90deg, rgba(36, 93, 91, .06) 1px, transparent 1px);
+      background-size: 42px 42px;
+      mask-image: linear-gradient(to bottom, black, transparent 88%);
+    }
+
+    .shell { width: min(1180px, calc(100% - 40px)); margin: 0 auto; }
+    header { padding: 34px 0 26px; display: flex; justify-content: space-between; gap: 20px; align-items: end; }
+    .brand { display: flex; align-items: center; gap: 12px; color: var(--teal); font-weight: 700; letter-spacing: .08em; text-transform: uppercase; font-size: .78rem; }
+    .mark { width: 34px; height: 34px; display: grid; place-items: center; color: #fff; background: var(--accent); border-radius: 8px 8px 8px 2px; font-family: Georgia, serif; font-size: 1.2rem; }
+    h1, h2 { font-family: "Fraunces", Georgia, serif; margin: 0; letter-spacing: 0; }
+    h1 { max-width: 650px; margin-top: 20px; font-size: clamp(2.5rem, 6vw, 5.2rem); line-height: .96; font-weight: 600; }
+    .intro { max-width: 530px; color: var(--muted); line-height: 1.6; margin: 16px 0 0; }
+    .status { display: flex; align-items: center; gap: 8px; color: var(--muted); font-size: .88rem; }
+    .status-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--accent); }
+
+    main { display: grid; grid-template-columns: minmax(280px, 360px) 1fr; gap: 26px; padding-bottom: 60px; }
+    .panel { background: rgba(255, 253, 248, .88); border: 1px solid rgba(217, 215, 204, .9); box-shadow: var(--shadow); border-radius: 12px; }
+    .form-panel { padding: 24px; align-self: start; position: sticky; top: 20px; }
+    .panel-heading { display: flex; justify-content: space-between; align-items: baseline; gap: 12px; margin-bottom: 20px; }
+    h2 { font-size: 1.55rem; }
+    .eyebrow { color: var(--accent-dark); font-size: .72rem; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+    label { display: block; color: var(--muted); font-size: .78rem; font-weight: 700; letter-spacing: .04em; margin: 14px 0 6px; }
+    input, textarea, select { width: 100%; border: 1px solid var(--line); border-radius: 7px; background: #fff; color: var(--ink); padding: 11px 12px; font: inherit; outline: none; transition: border-color .2s, box-shadow .2s; }
+    textarea { min-height: 90px; resize: vertical; }
+    input:focus, textarea:focus, select:focus { border-color: var(--teal); box-shadow: 0 0 0 3px rgba(36, 93, 91, .12); }
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    button { border: 0; border-radius: 7px; padding: 12px 16px; color: #fff; background: var(--teal); font: inherit; font-weight: 700; cursor: pointer; transition: transform .2s, background .2s; }
+    button:hover { background: #184846; transform: translateY(-1px); }
+    button:disabled { cursor: wait; opacity: .62; transform: none; }
+    .primary { width: 100%; margin-top: 20px; background: var(--accent); }
+    .primary:hover { background: var(--accent-dark); }
+    .hint { color: var(--muted); font-size: .76rem; line-height: 1.5; margin: 12px 0 0; }
+
+    .collection { padding: 24px; min-width: 0; }
+    .collection-toolbar { display: grid; grid-template-columns: 1.4fr 1fr 120px 100px auto; gap: 8px; align-items: end; }
+    .collection-toolbar label { margin-top: 0; }
+    .toolbar-button { padding: 11px 13px; white-space: nowrap; }
+    .count { color: var(--muted); font-size: .86rem; margin: 20px 0 14px; }
+    #feedback { min-height: 22px; color: var(--accent-dark); font-size: .88rem; margin: 12px 0; }
+    #liveNotice { display: none; margin: 0 0 14px; padding: 11px 13px; border-left: 3px solid var(--accent); border-radius: 5px; color: var(--accent-dark); background: #fff0e9; font-size: .88rem; }
+    #liveNotice.visible { display: block; animation: rise .35s both; }
+    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(235px, 1fr)); gap: 14px; }
+    .monument-card { overflow: hidden; border: 1px solid var(--line); border-radius: 9px; background: var(--panel); animation: rise .45s both; }
+    .card-image { width: 100%; height: 145px; object-fit: cover; background: linear-gradient(135deg, #dce6df, #b2c9c1); }
+    .card-image.is-empty { display: grid; place-items: center; color: var(--teal); font-family: Georgia, serif; font-size: 2.5rem; }
+    .card-body { padding: 16px; }
+    .card-title { font-family: "Fraunces", Georgia, serif; font-size: 1.3rem; line-height: 1.05; margin: 0 0 8px; }
+    .meta { color: var(--teal); font-size: .82rem; font-weight: 700; }
+    .description { color: var(--muted); font-size: .88rem; line-height: 1.5; margin: 12px 0 0; display: -webkit-box; line-clamp: 3; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+    .empty { grid-column: 1 / -1; color: var(--muted); text-align: center; padding: 45px 20px; border: 1px dashed var(--line); border-radius: 9px; }
+    @keyframes rise { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+    @media (max-width: 850px) { main { grid-template-columns: 1fr; } .form-panel { position: static; } .collection-toolbar { grid-template-columns: 1fr 1fr; } .toolbar-button { grid-column: span 2; } }
+    @media (max-width: 520px) { .shell { width: min(100% - 24px, 1180px); } header { display: block; } .status { margin-top: 20px; } .collection, .form-panel { padding: 18px; } .collection-toolbar, .two-col { grid-template-columns: 1fr; } .toolbar-button { grid-column: auto; } }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header>
+      <div>
+        <div class="brand"><span class="mark">M</span> Archives Monumento</div>
+        <h1>Donner une place aux lieux qui restent.</h1>
+        <p class="intro">Ajoutez les monuments de votre collection et retrouvez-les dans un catalogue clair, prêt à être enrichi.</p>
+      </div>
+      <div class="status"><span class="status-dot"></span><span id="statusText">Connexion locale</span></div>
+    </header>
+
+    <main>
+      <section class="panel form-panel">
+        <div class="panel-heading"><div><div class="eyebrow">Nouvelle entrée</div><h2>Créer un monument</h2></div></div>
+        <form id="monumentForm">
+          <label for="title">Nom du monument</label>
+          <input id="title" name="title" minlength="3" maxlength="200" placeholder="Ex. Tour Eiffel" required>
+          <div class="two-col">
+            <div><label for="country">Pays</label><input id="country" name="country" minlength="2" maxlength="100" placeholder="France" required></div>
+            <div><label for="city">Ville</label><input id="city" name="city" minlength="2" maxlength="100" placeholder="Paris" required></div>
+          </div>
+          <div class="two-col">
+            <div><label for="buildYear">Année</label><input id="buildYear" name="buildYear" type="number" min="-3000" placeholder="1889"></div>
+            <div><label for="picture">Image (URL)</label><input id="picture" name="picture" type="url" placeholder="https://…"></div>
+          </div>
+          <label for="description">Description</label>
+          <textarea id="description" name="description" maxlength="2000" placeholder="Quelques repères historiques…"></textarea>
+          <button class="primary" id="submitButton" type="submit">+ Ajouter au catalogue</button>
+          <p class="hint">L’API nécessite un jeton d’accès. Il est conservé uniquement dans ce navigateur.</p>
+          <label for="token">Jeton Bearer</label>
+          <input id="token" type="password" placeholder="Collez votre access token" autocomplete="off">
+        </form>
+      </section>
+
+      <section class="panel collection">
+        <div class="panel-heading"><div><div class="eyebrow">Catalogue vivant</div><h2>Les monuments</h2></div><button id="refreshButton" class="toolbar-button" type="button">↻ Actualiser</button></div>
+        <div class="collection-toolbar">
+          <div><label for="search">Titre</label><input id="search" placeholder="Rechercher…"></div>
+          <div><label for="filterCountry">Pays</label><input id="filterCountry" placeholder="France"></div>
+          <div><label for="orderBy">Trier par</label><select id="orderBy"><option value="title">Nom</option><option value="buildYear">Année</option><option value="createdAt">Ajout</option></select></div>
+          <div><label for="order">Sens</label><select id="order"><option value="asc">A → Z</option><option value="desc">Z → A</option></select></div>
+          <button id="filterButton" class="toolbar-button" type="button">Filtrer</button>
+        </div>
+        <div id="feedback" role="status" aria-live="polite"></div>
+        <div id="liveNotice" role="status" aria-live="polite"></div>
+        <div class="count" id="count">Chargement du catalogue…</div>
+        <div class="grid" id="monumentGrid"></div>
+      </section>
+    </main>
+  </div>
+
+  <script src="https://cdn.socket.io/4.8.1/socket.io.min.js"></script>
+  <script>
+    const API_URL = "http://localhost:3000";
+    const tokenInput = document.getElementById("token");
+    const savedToken = localStorage.getItem("monumento_access_token");
+    if (savedToken) tokenInput.value = savedToken;
+
+    const statusText = document.getElementById("statusText");
+    const feedback = document.getElementById("feedback");
+    const liveNotice = document.getElementById("liveNotice");
+    const grid = document.getElementById("monumentGrid");
+    const count = document.getElementById("count");
+    let socket;
+
+    function authHeaders(json = false) {
+      const token = tokenInput.value.trim();
+      if (token) localStorage.setItem("monumento_access_token", token);
+      return { ...(json ? { "Content-Type": "application/json" } : {}), ...(token ? { Authorization: `Bearer ${token}` } : {}) };
+    }
+
+    function showFeedback(message = "", error = false) {
+      feedback.textContent = message;
+      feedback.style.color = error ? "var(--accent-dark)" : "var(--teal)";
+    }
+
+    function connectSocket() {
+      if (socket) socket.disconnect();
+      const token = tokenInput.value.trim();
+      if (!token) {
+        statusText.textContent = "Token requis pour le temps réel";
+        return;
+      }
+
+      socket = io(API_URL, { auth: { token } });
+      socket.on("connect", () => { statusText.textContent = "Temps réel connecté"; });
+      socket.on("disconnect", () => { statusText.textContent = "Temps réel déconnecté"; });
+      socket.on("connect_error", () => { statusText.textContent = "Temps réel indisponible"; });
+      socket.on("monument:created", async monument => {
+        liveNotice.textContent = `Nouveau monument publié : ${monument.title}`;
+        liveNotice.classList.add("visible");
+        await loadMonuments();
+        window.setTimeout(() => liveNotice.classList.remove("visible"), 5000);
+      });
+    }
+
+    async function api(path, options = {}) {
+      const response = await fetch(`${API_URL}${path}`, { ...options, headers: { ...authHeaders(Boolean(options.body)), ...(options.headers || {}) } });
+      const payload = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(payload.message || `Erreur ${response.status}`);
+      return payload;
+    }
+
+    function renderMonuments(monuments) {
+      grid.replaceChildren();
+      count.textContent = `${monuments.length} monument${monuments.length > 1 ? "s" : ""} dans le catalogue`;
+      if (!monuments.length) {
+        grid.innerHTML = '<div class="empty">Aucun monument ne correspond à cette recherche.</div>';
+        return;
+      }
+      monuments.forEach((monument, index) => {
+        const card = document.createElement("article");
+        card.className = "monument-card";
+        card.style.animationDelay = `${index * 45}ms`;
+        const image = monument.picture
+          ? `<img class="card-image" src="${escapeHtml(monument.picture)}" alt="${escapeHtml(monument.title)}" loading="lazy">`
+          : '<div class="card-image is-empty" aria-hidden="true">M</div>';
+        card.innerHTML = `${image}<div class="card-body"><h3 class="card-title">${escapeHtml(monument.title)}</h3><div class="meta">${escapeHtml(monument.city)}, ${escapeHtml(monument.country)}${monument.buildYear ? ` · ${monument.buildYear}` : ""}</div>${monument.description ? `<p class="description">${escapeHtml(monument.description)}</p>` : ""}</div>`;
+        grid.append(card);
+      });
+    }
+
+    function escapeHtml(value) {
+      return String(value).replace(/[&<>'"]/g, character => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", "'": "&#39;", '"': "&quot;" })[character]);
+    }
+
+    async function loadMonuments() {
+      try {
+        statusText.textContent = "Catalogue synchronisé";
+        const params = new URLSearchParams({ orderBy: document.getElementById("orderBy").value, order: document.getElementById("order").value });
+        const title = document.getElementById("search").value.trim();
+        const country = document.getElementById("filterCountry").value.trim();
+        if (title) params.set("title", title);
+        if (country) params.set("country", country);
+        showFeedback("Chargement…");
+        const payload = await api(`/monuments?${params}`);
+        renderMonuments(payload.data || []);
+        showFeedback("");
+      } catch (error) {
+        statusText.textContent = "API indisponible";
+        showFeedback(error.message, true);
+        count.textContent = "Impossible de charger le catalogue";
+      }
+    }
+
+    document.getElementById("monumentForm").addEventListener("submit", async event => {
+      event.preventDefault();
+      const form = new FormData(event.currentTarget);
+      const data = Object.fromEntries(form.entries());
+      if (data.buildYear === "") delete data.buildYear;
+      if (data.picture === "") delete data.picture;
+      if (data.description === "") delete data.description;
+      const button = document.getElementById("submitButton");
+      button.disabled = true;
+      try {
+        await api("/monuments", { method: "POST", body: JSON.stringify(data) });
+        event.currentTarget.reset();
+        tokenInput.value = localStorage.getItem("monumento_access_token") || "";
+        showFeedback("Monument ajouté au catalogue.");
+        await loadMonuments();
+      } catch (error) {
+        showFeedback(error.message, true);
+      } finally {
+        button.disabled = false;
+      }
+    });
+
+    document.getElementById("refreshButton").addEventListener("click", loadMonuments);
+    document.getElementById("filterButton").addEventListener("click", loadMonuments);
+    document.getElementById("search").addEventListener("keydown", event => { if (event.key === "Enter") loadMonuments(); });
+    tokenInput.addEventListener("change", connectSocket);
+    connectSocket();
+    loadMonuments();
+  </script>
+</body>
+</html>

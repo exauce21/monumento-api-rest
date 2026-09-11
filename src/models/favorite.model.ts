@@ -39,7 +39,16 @@ Favorite.init(
       },
     },
   },
-  { sequelize },
+  {
+    sequelize,
+    indexes: [
+      {
+        unique: true,
+        fields: ["userId", "monumentId"],
+        name: "favorites_user_monument_unique",
+      },
+    ],
+  },
 );
 
 User.belongsToMany(Monument, {

@@ -17,6 +17,65 @@ const spec = swaggerJsdoc({
         bearerAuth: { type: "http", scheme: "bearer", bearerFormat: "JWT" },
       },
       schemas: {
+        User: {
+          type: "object",
+          properties: {
+            id: { type: "integer", example: 1 },
+            username: { type: "string", minLength: 3, maxLength: 25, example: "visiteur" },
+            role: { type: "string", enum: ["visitor", "guide"], example: "visitor" },
+            createdAt: { type: "string", format: "date-time" },
+            updatedAt: { type: "string", format: "date-time" },
+          },
+        },
+        UserInput: {
+          type: "object",
+          required: ["username", "password"],
+          properties: {
+            username: { type: "string", minLength: 3, maxLength: 25, example: "visiteur" },
+            password: { type: "string", format: "password", minLength: 6, maxLength: 100, example: "secret123" },
+          },
+        },
+        AuthTokens: {
+          type: "object",
+          properties: {
+            userId: { type: "integer", example: 1 },
+            accessToken: { type: "string" },
+            refreshToken: { type: "string" },
+          },
+        },
+        Anecdote: {
+          type: "object",
+          properties: {
+            id: { type: "integer", example: 1 },
+            content: {
+              type: "string",
+              minLength: 10,
+              maxLength: 2000,
+              example: "La première pierre du monument a été posée en présence du maire.",
+            },
+            monumentId: { type: "integer", example: 15 },
+          },
+        },
+        AnecdoteInput: {
+          type: "object",
+          required: ["content"],
+          properties: {
+            content: {
+              type: "string",
+              minLength: 10,
+              maxLength: 2000,
+              example: "La première pierre du monument a été posée en présence du maire.",
+            },
+          },
+        },
+        Favorite: {
+          type: "object",
+          properties: {
+            id: { type: "integer", example: 1 },
+            userId: { type: "integer", example: 3 },
+            monumentId: { type: "integer", example: 15 },
+          },
+        },
         Monument: {
           type: "object",
           properties: {
