@@ -6,6 +6,7 @@ import { setupSocketServer } from "./socket/index.js";
 // Import models to ensure they are registered with Sequelize
 import "./models/monument.model.js";
 import "./models/user.model.js";
+import "./models/anecdote.model.js";
 
 import { initDatabase } from "./db/sequelize.js";
  
