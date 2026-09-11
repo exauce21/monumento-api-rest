@@ -27,7 +27,7 @@
     </form>
     <script src="https://cdn.socket.io/4.8.1/socket.io.min.js"></script>
     <script>
-        const TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsInVzZXJuYW1lIjoicmljaGFyZCIsInJvbGUiOiJ2aXNpdG9yIiwiaWF0IjoxNzg5MDQzNDEyLCJleHAiOjE3ODkwNDUyMTJ9.T5Hiriy78-gvrTBGA7Cm2F66huJLw9DlTbBkXaAp_VU";
+        const TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjMsInVzZXJuYW1lIjoidmlzaXRldXIiLCJyb2xlIjoiZ3VpZGUiLCJpYXQiOjE3ODkxMTI5MDIsImV4cCI6MTc4OTcxNzcwMn0.07qXegRcqD-zB40WeA0uAnBnLvWbt8EFzR1a0JUvZtQ";
 
         const ME = JSON.parse(atob(TOKEN.split(".")[1])).username;
         const socket = io("http://localhost:3000", { auth: { token: TOKEN } });
