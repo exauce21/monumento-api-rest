@@ -38,3 +38,15 @@ Anecdote.init(
   },
   { sequelize },
 );
+
+Monument.hasMany(Anecdote, {
+  foreignKey: "monumentId",
+  as: "anecdotes",
+  onDelete: "CASCADE",
+});
+
+Anecdote.belongsTo(Monument, {
+  foreignKey: "monumentId",
+  as: "monument",
+  onDelete: "CASCADE",
+});
