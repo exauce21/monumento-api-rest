@@ -17,6 +17,32 @@ const spec = swaggerJsdoc({
         bearerAuth: { type: "http", scheme: "bearer", bearerFormat: "JWT" },
       },
       schemas: {
+        User: {
+          type: "object",
+          properties: {
+            id: { type: "integer", example: 1 },
+            username: { type: "string", minLength: 3, maxLength: 25, example: "visiteur" },
+            role: { type: "string", enum: ["visitor", "guide"], example: "visitor" },
+            createdAt: { type: "string", format: "date-time" },
+            updatedAt: { type: "string", format: "date-time" },
+          },
+        },
+        UserInput: {
+          type: "object",
+          required: ["username", "password"],
+          properties: {
+            username: { type: "string", minLength: 3, maxLength: 25, example: "visiteur" },
+            password: { type: "string", format: "password", minLength: 6, maxLength: 100, example: "secret123" },
+          },
+        },
+        AuthTokens: {
+          type: "object",
+          properties: {
+            userId: { type: "integer", example: 1 },
+            accessToken: { type: "string" },
+            refreshToken: { type: "string" },
+          },
+        },
         Monument: {
           type: "object",
           properties: {

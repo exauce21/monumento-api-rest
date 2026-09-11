@@ -74,6 +74,8 @@
     .toolbar-button { padding: 11px 13px; white-space: nowrap; }
     .count { color: var(--muted); font-size: .86rem; margin: 20px 0 14px; }
     #feedback { min-height: 22px; color: var(--accent-dark); font-size: .88rem; margin: 12px 0; }
+    #liveNotice { display: none; margin: 0 0 14px; padding: 11px 13px; border-left: 3px solid var(--accent); border-radius: 5px; color: var(--accent-dark); background: #fff0e9; font-size: .88rem; }
+    #liveNotice.visible { display: block; animation: rise .35s both; }
     .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(235px, 1fr)); gap: 14px; }
     .monument-card { overflow: hidden; border: 1px solid var(--line); border-radius: 9px; background: var(--panel); animation: rise .45s both; }
     .card-image { width: 100%; height: 145px; object-fit: cover; background: linear-gradient(135deg, #dce6df, #b2c9c1); }
@@ -81,7 +83,7 @@
     .card-body { padding: 16px; }
     .card-title { font-family: "Fraunces", Georgia, serif; font-size: 1.3rem; line-height: 1.05; margin: 0 0 8px; }
     .meta { color: var(--teal); font-size: .82rem; font-weight: 700; }
-    .description { color: var(--muted); font-size: .88rem; line-height: 1.5; margin: 12px 0 0; display: -webkit-box; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
+    .description { color: var(--muted); font-size: .88rem; line-height: 1.5; margin: 12px 0 0; display: -webkit-box; line-clamp: 3; -webkit-line-clamp: 3; -webkit-box-orient: vertical; overflow: hidden; }
     .empty { grid-column: 1 / -1; color: var(--muted); text-align: center; padding: 45px 20px; border: 1px dashed var(--line); border-radius: 9px; }
     @keyframes rise { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
     @media (max-width: 850px) { main { grid-template-columns: 1fr; } .form-panel { position: static; } .collection-toolbar { grid-template-columns: 1fr 1fr; } .toolbar-button { grid-column: span 2; } }
@@ -132,12 +134,14 @@
           <button id="filterButton" class="toolbar-button" type="button">Filtrer</button>
         </div>
         <div id="feedback" role="status" aria-live="polite"></div>
+        <div id="liveNotice" role="status" aria-live="polite"></div>
         <div class="count" id="count">Chargement du catalogue…</div>
         <div class="grid" id="monumentGrid"></div>
       </section>
     </main>
   </div>
 
+  <script src="https://cdn.socket.io/4.8.1/socket.io.min.js"></script>
   <script>
     const API_URL = "http://localhost:3000";
     const tokenInput = document.getElementById("token");
@@ -146,8 +150,10 @@
 
     const statusText = document.getElementById("statusText");
     const feedback = document.getElementById("feedback");
+    const liveNotice = document.getElementById("liveNotice");
     const grid = document.getElementById("monumentGrid");
     const count = document.getElementById("count");
+    let socket;
 
     function authHeaders(json = false) {
       const token = tokenInput.value.trim();
@@ -158,6 +164,26 @@
     function showFeedback(message = "", error = false) {
       feedback.textContent = message;
       feedback.style.color = error ? "var(--accent-dark)" : "var(--teal)";
+    }
+
+    function connectSocket() {
+      if (socket) socket.disconnect();
+      const token = tokenInput.value.trim();
+      if (!token) {
+        statusText.textContent = "Token requis pour le temps réel";
+        return;
+      }
+
+      socket = io(API_URL, { auth: { token } });
+      socket.on("connect", () => { statusText.textContent = "Temps réel connecté"; });
+      socket.on("disconnect", () => { statusText.textContent = "Temps réel déconnecté"; });
+      socket.on("connect_error", () => { statusText.textContent = "Temps réel indisponible"; });
+      socket.on("monument:created", async monument => {
+        liveNotice.textContent = `Nouveau monument publié : ${monument.title}`;
+        liveNotice.classList.add("visible");
+        await loadMonuments();
+        window.setTimeout(() => liveNotice.classList.remove("visible"), 5000);
+      });
     }
 
     async function api(path, options = {}) {
@@ -234,6 +260,8 @@
     document.getElementById("refreshButton").addEventListener("click", loadMonuments);
     document.getElementById("filterButton").addEventListener("click", loadMonuments);
     document.getElementById("search").addEventListener("keydown", event => { if (event.key === "Enter") loadMonuments(); });
+    tokenInput.addEventListener("change", connectSocket);
+    connectSocket();
     loadMonuments();
   </script>
 </body>

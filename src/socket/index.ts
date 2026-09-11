@@ -2,11 +2,13 @@ import type http from "node:http";
 import { Server } from "socket.io";
 import type { ChatMessage, ClientToServerEvents, ServerToClientEvents, SocketData } from "./events.js";
 import { verifyAccessToken, type TokenPayload } from "../services/token.service.js";
+import { registerSocketServer } from "./broadcast.js";
 
 export function setupSocketServer(server: http.Server) {
   const io = new Server<ClientToServerEvents, ServerToClientEvents, {}, SocketData>(server, {
     cors: { origin: "*" },
   });
+  registerSocketServer(io);
 
   io.use((socket, next) => {
     const token = socket.handshake.auth.token;
