@@ -11,7 +11,7 @@ export class User extends Model<InferAttributes<User>, InferCreationAttributes<U
   declare id: CreationOptional<number>;
   declare username: string;
   declare password: string;
-  declare role: CreationOptional<"visitor" | "guide">;
+  declare role: CreationOptional<"visitor" | "guide" | "admin">;
   declare refreshToken: CreationOptional<string | null>;
   declare refreshTokenExpiry: CreationOptional<Date | null>;
   declare createdAt: CreationOptional<Date>;
@@ -39,7 +39,7 @@ User.init(
         },
     },
     role: { 
-      type: DataTypes.ENUM("visitor", "guide"), 
+      type: DataTypes.ENUM("visitor", "guide", "admin"), 
       allowNull: false, 
       defaultValue: "visitor" 
     },

@@ -11,6 +11,8 @@ import { authRouter } from "./routes/auth.routes.js";
 import cors from "cors";
 import helmet from "helmet";
 import { mountSwagger } from "./docs/swagger.js";
+import { adminRouter } from "./routes/admin.routes.js";
+import { requireRole } from "./middlewares/require-role.js";
 
 export function createApp() {
   const app = express();
@@ -42,6 +44,7 @@ export function createApp() {
   app.use("/monuments", requireAuth, monumentRouter);
   app.use("/anecdotes", requireAuth, anecdoteRouter);
   app.use("/favorites", requireAuth, favoriteRouter);
+  app.use("/admin", requireAuth, requireRole("admin"), adminRouter);
 
   // Erreurs (toujours en dernier)
   app.use(errorHandler);
