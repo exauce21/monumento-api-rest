@@ -11,6 +11,7 @@ import { authRouter } from "./routes/auth.routes.js";
 import cors from "cors";
 import helmet from "helmet";
 import { mountSwagger } from "./docs/swagger.js";
+import { adminRouter } from "./routes/admin.routes.js";
 
 export function createApp() {
   const app = express();
@@ -39,6 +40,7 @@ export function createApp() {
   });
 
   app.use("/auth", authRouter);
+  app.use("/admin", adminRouter);
   app.use("/monuments", requireAuth, monumentRouter);
   app.use("/anecdotes", requireAuth, anecdoteRouter);
   app.use("/favorites", requireAuth, favoriteRouter);
