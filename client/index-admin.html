@@ -1,0 +1,133 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Monumento - Administration</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap" rel="stylesheet">
+  <style>
+    :root { --ink:#182329; --muted:#68757a; --paper:#f3f0e8; --panel:#fffdf8; --line:#d9d7cc; --accent:#d35d3f; --teal:#245d5b; --danger:#a23c32; --shadow:0 16px 40px rgba(31,49,45,.09); }
+    * { box-sizing:border-box; }
+    body { margin:0; color:var(--ink); background:var(--paper); font-family:"DM Sans",sans-serif; }
+    body::before { content:""; position:fixed; inset:0; z-index:-1; opacity:.5; background-image:linear-gradient(rgba(36,93,91,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(36,93,91,.06) 1px,transparent 1px); background-size:42px 42px; mask-image:linear-gradient(to bottom,black,transparent 88%); }
+    .shell { width:min(1240px,calc(100% - 40px)); margin:auto; }
+    header { display:flex; align-items:end; justify-content:space-between; gap:24px; padding:32px 0 26px; border-bottom:1px solid var(--line); }
+    .brand { display:flex; align-items:center; gap:11px; color:var(--teal); font-size:.78rem; font-weight:700; letter-spacing:.08em; text-transform:uppercase; }
+    .mark { width:34px; height:34px; display:grid; place-items:center; color:#fff; background:var(--accent); border-radius:8px 8px 8px 2px; font:1.2rem Georgia,serif; }
+    h1,h2,h3 { margin:0; font-family:"Fraunces",Georgia,serif; letter-spacing:0; }
+    h1 { margin-top:19px; font-size:clamp(2.6rem,5vw,4.5rem); line-height:.95; font-weight:600; }
+    .subhead { max-width:520px; margin:14px 0 0; color:var(--muted); line-height:1.55; }
+    .topbar { display:flex; align-items:center; gap:10px; }
+    .topbar a, button { border:0; border-radius:7px; padding:10px 14px; color:#fff; background:var(--teal); font:inherit; font-size:.82rem; font-weight:700; cursor:pointer; text-decoration:none; }
+    .topbar a { background:transparent; color:var(--teal); border:1px solid var(--line); }
+    button:hover,.topbar a:hover { background:#184846; transform:translateY(-1px); }
+    button { transition:transform .2s,background .2s; }
+    button:disabled { cursor:wait; opacity:.6; transform:none; }
+    main { padding:28px 0 70px; }
+    .token-panel { display:grid; grid-template-columns:1fr auto; gap:12px; align-items:end; padding:18px; border:1px solid var(--line); border-radius:10px; background:rgba(255,253,248,.82); }
+    .field label { display:block; margin:0 0 7px; color:var(--muted); font-size:.74rem; font-weight:700; letter-spacing:.04em; }
+    input,select,textarea { width:100%; border:1px solid var(--line); border-radius:7px; padding:11px 12px; outline:none; color:var(--ink); background:#fff; font:inherit; }
+    textarea { min-height:86px; resize:vertical; }
+    input:focus,select:focus,textarea:focus { border-color:var(--teal); box-shadow:0 0 0 3px rgba(36,93,91,.12); }
+    .token-button { white-space:nowrap; }
+    .feedback { min-height:22px; margin:12px 0 0; color:var(--muted); font-size:.84rem; }
+    .feedback.error { color:var(--danger); }
+    .stats { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin:24px 0; }
+    .stat { padding:19px; border:1px solid var(--line); border-radius:10px; background:var(--panel); box-shadow:var(--shadow); }
+    .stat strong { display:block; color:var(--teal); font:2rem "Fraunces",Georgia,serif; }
+    .stat span { color:var(--muted); font-size:.78rem; }
+    .tabs { display:flex; gap:4px; margin-bottom:18px; border-bottom:1px solid var(--line); }
+    .tab { border-radius:7px 7px 0 0; color:var(--muted); background:transparent; }
+    .tab.active { color:#fff; background:var(--teal); }
+    .workspace { display:grid; grid-template-columns:300px 1fr; gap:20px; }
+    .panel { padding:20px; border:1px solid var(--line); border-radius:10px; background:rgba(255,253,248,.9); box-shadow:var(--shadow); }
+    .panel h2 { font-size:1.45rem; }
+    .panel-copy { margin:8px 0 18px; color:var(--muted); font-size:.8rem; line-height:1.5; }
+    .form-grid { display:grid; gap:11px; }
+    .form-actions { display:flex; gap:8px; margin-top:16px; }
+    .secondary { color:var(--teal); background:#e7efeb; }
+    .danger { background:var(--danger); }
+    .danger:hover { background:#7e2e28; }
+    .toolbar { display:flex; justify-content:space-between; gap:12px; margin-bottom:15px; }
+    .toolbar input { max-width:330px; }
+    .table-wrap { overflow-x:auto; }
+    table { width:100%; border-collapse:collapse; font-size:.82rem; }
+    th { padding:10px 8px; color:var(--muted); font-size:.7rem; letter-spacing:.05em; text-align:left; text-transform:uppercase; border-bottom:1px solid var(--line); }
+    td { padding:13px 8px; border-bottom:1px solid var(--line); vertical-align:middle; }
+    tbody tr:hover { background:#faf8f1; }
+    .thumb { width:52px; height:38px; object-fit:cover; border-radius:5px; background:#d6e2d8; }
+    .muted { color:var(--muted); }
+    .badge { display:inline-block; padding:4px 8px; border-radius:20px; color:var(--teal); background:#e2eeea; font-size:.7rem; font-weight:700; }
+    .badge.admin { color:#8b382e; background:#fae6df; }
+    .badge.guide { color:#596b31; background:#edf1dd; }
+    .row-actions { display:flex; gap:5px; }
+    .row-actions button { padding:7px 9px; font-size:.72rem; }
+    .empty { padding:35px 15px; color:var(--muted); text-align:center; }
+    .hidden { display:none; }
+    @media (max-width:820px) { header { display:block; } .topbar { margin-top:22px; } .workspace { grid-template-columns:1fr; } .stats { grid-template-columns:repeat(3,1fr); } }
+    @media (max-width:560px) { .shell { width:min(100% - 24px,1240px); } .token-panel { grid-template-columns:1fr; } .stats { gap:8px; } .stat { padding:13px 10px; } .stat strong { font-size:1.5rem; } .stat span { font-size:.68rem; } .toolbar { display:block; } .toolbar input { max-width:none; margin-bottom:8px; } }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <header>
+      <div><div class="brand"><span class="mark">M</span> Monumento · Administration</div><h1>Garder la collection vivante.</h1><p class="subhead">Supervisez les publications, les guides et les visiteurs depuis un seul espace de travail.</p></div>
+      <nav class="topbar"><a href="index-visiteur.html">Voir le site</a><a href="login.html">Déconnexion</a></nav>
+    </header>
+    <main>
+      <section class="token-panel"><div class="field"><label for="token">Jeton d'accès administrateur</label><input id="token" type="password" placeholder="Collez votre access token admin" autocomplete="off"></div><button class="token-button" id="connectButton" type="button">Se connecter</button></section>
+      <div class="feedback" id="feedback" role="status" aria-live="polite">Un compte avec le rôle admin est nécessaire.</div>
+      <section class="stats"><div class="stat"><strong id="monumentCount">-</strong><span>Monuments publiés</span></div><div class="stat"><strong id="guideCount">-</strong><span>Guides actifs</span></div><div class="stat"><strong id="visitorCount">-</strong><span>Visiteurs inscrits</span></div></section>
+      <nav class="tabs" aria-label="Sections administration"><button class="tab active" data-tab="monuments" type="button">Monuments</button><button class="tab" data-tab="users" type="button">Guides et visiteurs</button></nav>
+      <section class="workspace" id="monumentsPanel">
+        <form class="panel" id="monumentForm"><h2 id="monumentFormTitle">Nouveau monument</h2><p class="panel-copy">Publiez ou corrigez une fiche visible dans le fil visiteur.</p><input id="monumentId" type="hidden"><div class="form-grid"><div class="field"><label for="title">Nom</label><input id="title" minlength="3" required></div><div class="field"><label for="country">Pays</label><input id="country" minlength="2" required></div><div class="field"><label for="city">Ville</label><input id="city" minlength="2" required></div><div class="field"><label for="buildYear">Année de construction</label><input id="buildYear" type="number" min="-3000"></div><div class="field"><label for="picture">URL de l'image</label><input id="picture" type="url"></div><div class="field"><label for="description">Description</label><textarea id="description" maxlength="2000"></textarea></div></div><div class="form-actions"><button type="submit">Enregistrer</button><button class="secondary hidden" id="cancelEdit" type="button">Annuler</button></div></form>
+        <section class="panel"><div class="toolbar"><div><h2>Publications</h2><p class="panel-copy">Modifiez ou retirez les monuments du catalogue.</p></div><input id="monumentSearch" placeholder="Rechercher…"></div><div class="table-wrap"><table><thead><tr><th>Monument</th><th>Lieu</th><th>Année</th><th>Actions</th></tr></thead><tbody id="monumentRows"></tbody></table></div></section>
+      </section>
+      <section class="panel hidden" id="usersPanel"><div class="toolbar"><div><h2>Comptes utilisateurs</h2><p class="panel-copy">Gérez les visiteurs, les guides et les administrateurs.</p></div><input id="userSearch" placeholder="Rechercher un utilisateur…"></div><div class="table-wrap"><table><thead><tr><th>Utilisateur</th><th>Rôle</th><th>Inscrit le</th><th>Actions</th></tr></thead><tbody id="userRows"></tbody></table></div></section>
+    </main>
+  </div>
+  <script>
+    const API_URL = "http://localhost:3000";
+    const tokenInput = document.getElementById("token");
+    const feedback = document.getElementById("feedback");
+    const monumentRows = document.getElementById("monumentRows");
+    const userRows = document.getElementById("userRows");
+    let token = localStorage.getItem("monumento_admin_token") || "";
+    let monuments = [];
+    let users = [];
+    let editingId = null;
+    tokenInput.value = token;
+
+    function escapeHtml(value) { return String(value ?? "").replace(/[&<>'"]/g, character => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", "'":"&#39;", '"':"&quot;" })[character]); }
+    function setFeedback(message, error = false) { feedback.textContent = message; feedback.classList.toggle("error", error); }
+    function authHeaders(json = false) { return { ...(json ? { "Content-Type":"application/json" } : {}), ...(token ? { Authorization:`Bearer ${token}` } : {}) }; }
+    async function api(path, options = {}) { const response = await fetch(`${API_URL}${path}`, { ...options, headers:{ ...authHeaders(Boolean(options.body)), ...(options.headers || {}) } }); const payload = await response.json().catch(() => ({})); if (!response.ok) throw new Error(payload.message || `Erreur ${response.status}`); return payload; }
+    function formatDate(value) { return value ? new Intl.DateTimeFormat("fr-FR", { day:"numeric", month:"short", year:"numeric" }).format(new Date(value)) : "-"; }
+    function updateStats() { document.getElementById("monumentCount").textContent = monuments.length; document.getElementById("guideCount").textContent = users.filter(user => user.role === "guide").length; document.getElementById("visitorCount").textContent = users.filter(user => user.role === "visitor").length; }
+    function renderMonuments() {
+      const query = document.getElementById("monumentSearch").value.trim().toLowerCase();
+      const items = monuments.filter(item => `${item.title} ${item.city} ${item.country}`.toLowerCase().includes(query));
+      monumentRows.innerHTML = items.length ? items.map(item => `<tr><td>${item.picture ? `<img class="thumb" src="${escapeHtml(item.picture)}" alt="">` : ""} <strong>${escapeHtml(item.title)}</strong></td><td>${escapeHtml(item.city)}, ${escapeHtml(item.country)}</td><td class="muted">${item.buildYear ?? "-"}</td><td><div class="row-actions"><button data-action="edit-monument" data-id="${item.id}" type="button">Modifier</button><button class="danger" data-action="delete-monument" data-id="${item.id}" type="button">Supprimer</button></div></td></tr>`).join("") : '<tr><td class="empty" colspan="4">Aucun monument trouvé.</td></tr>';
+    }
+    function roleBadge(role) { return `<span class="badge ${role}">${escapeHtml(role)}</span>`; }
+    function renderUsers() {
+      const query = document.getElementById("userSearch").value.trim().toLowerCase();
+      const items = users.filter(user => user.username.toLowerCase().includes(query));
+      userRows.innerHTML = items.length ? items.map(user => `<tr><td><strong>${escapeHtml(user.username)}</strong><br><span class="muted">#${user.id}</span></td><td>${roleBadge(user.role)}</td><td class="muted">${formatDate(user.createdAt)}</td><td><div class="row-actions"><button data-action="role-user" data-id="${user.id}" type="button">Changer rôle</button><button class="danger" data-action="delete-user" data-id="${user.id}" type="button">Supprimer</button></div></td></tr>`).join("") : '<tr><td class="empty" colspan="4">Aucun utilisateur trouvé.</td></tr>';
+    }
+    async function loadData() { if (!token) return; setFeedback("Synchronisation…"); try { const [monumentPayload,userPayload] = await Promise.all([api("/monuments?orderBy=createdAt&order=desc&limit=100"), api("/admin/users")]); monuments = monumentPayload.data || []; users = userPayload.data || []; renderMonuments(); renderUsers(); updateStats(); setFeedback("Dashboard synchronisé."); } catch (error) { setFeedback(error.message || "Accès administrateur refusé.", true); } }
+    function resetMonumentForm() { editingId = null; document.getElementById("monumentForm").reset(); document.getElementById("monumentFormTitle").textContent = "Nouveau monument"; document.getElementById("cancelEdit").classList.add("hidden"); }
+    function editMonument(id) { const item = monuments.find(monument => monument.id === id); if (!item) return; editingId = id; document.getElementById("monumentFormTitle").textContent = "Modifier le monument"; ["title","country","city","buildYear","picture","description"].forEach(field => { document.getElementById(field).value = item[field] ?? ""; }); document.getElementById("cancelEdit").classList.remove("hidden"); window.scrollTo({ top:0, behavior:"smooth" }); }
+    document.getElementById("connectButton").addEventListener("click", () => { token = tokenInput.value.trim(); localStorage.setItem("monumento_admin_token", token); loadData(); });
+    document.getElementById("monumentSearch").addEventListener("input", renderMonuments);
+    document.getElementById("userSearch").addEventListener("input", renderUsers);
+    document.getElementById("cancelEdit").addEventListener("click", resetMonumentForm);
+    document.getElementById("monumentForm").addEventListener("submit", async event => { event.preventDefault(); const data = Object.fromEntries(new FormData(event.currentTarget).entries()); delete data.monumentId; if (data.buildYear === "") delete data.buildYear; if (data.picture === "") delete data.picture; if (data.description === "") delete data.description; try { if (editingId) await api(`/monuments/${editingId}`, { method:"PUT", body:JSON.stringify(data) }); else await api("/monuments", { method:"POST", body:JSON.stringify(data) }); resetMonumentForm(); setFeedback("Monument enregistré."); await loadData(); } catch (error) { setFeedback(error.message, true); } });
+    document.body.addEventListener("click", async event => { const button = event.target.closest("button[data-action]"); if (!button) return; const id = Number(button.dataset.id); try { if (button.dataset.action === "edit-monument") editMonument(id); if (button.dataset.action === "delete-monument" && confirm("Supprimer ce monument ?")) { await api(`/monuments/${id}`, { method:"DELETE" }); await loadData(); } if (button.dataset.action === "role-user") { const user = users.find(item => item.id === id); const role = prompt("Nouveau rôle: visitor, guide ou admin", user?.role); if (role && ["visitor","guide","admin"].includes(role)) { await api(`/admin/users/${id}`, { method:"PATCH", body:JSON.stringify({ role }) }); await loadData(); } } if (button.dataset.action === "delete-user" && confirm("Supprimer cet utilisateur ?")) { await api(`/admin/users/${id}`, { method:"DELETE" }); await loadData(); } } catch (error) { setFeedback(error.message, true); } });
+    document.querySelectorAll(".tab").forEach(tab => tab.addEventListener("click", () => { document.querySelectorAll(".tab").forEach(item => item.classList.remove("active")); tab.classList.add("active"); document.getElementById("monumentsPanel").classList.toggle("hidden", tab.dataset.tab !== "monuments"); document.getElementById("usersPanel").classList.toggle("hidden", tab.dataset.tab !== "users"); }));
+    loadData();
+  </script>
+</body>
+</html>

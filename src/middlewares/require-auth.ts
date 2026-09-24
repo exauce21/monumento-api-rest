@@ -16,7 +16,7 @@ export function currentUser(req: Request): TokenPayload {
   return req.user;
 }
 
-export function requireRole(...roles: TokenPayload["role"]): RequestHandler {
+export function requireRole(...roles: TokenPayload["role"][]): RequestHandler {
   return (req, _res, next) => {
     const user = currentUser(req);
     if (!roles.includes(user.role)) throw forbiddenError("Cette action nécessite des droits administrateur.");

@@ -37,7 +37,7 @@ export const listUsers: RequestHandler = async (req, res) => {
 };
 
 export const updateUser: RequestHandler = async (req, res) => {
-  const userId = parseUserId(req.params.id);
+  const userId = parseUserId(String(req.params.id));
   const user = await User.findByPk(userId);
   if (!user) throw notFoundError("Utilisateur introuvable.");
 
@@ -60,7 +60,7 @@ export const updateUser: RequestHandler = async (req, res) => {
 };
 
 export const removeUser: RequestHandler = async (req, res) => {
-  const userId = parseUserId(req.params.id);
+  const userId = parseUserId(String(req.params.id));
   const { userId: currentUserId } = currentUser(req);
   if (userId === currentUserId) throw badRequestError("Un administrateur ne peut pas supprimer son propre compte.");
 
