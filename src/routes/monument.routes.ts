@@ -1,7 +1,6 @@
 import { Router } from "express";
 import * as monumentController from "../controllers/monument.controller.js";
 import * as anecdoteController from "../controllers/anecdote.controller.js";
-import { requireRole } from "../middlewares/require-role.js";
 
 export const monumentRouter = Router();
 
@@ -96,7 +95,7 @@ monumentRouter.get("/:id", monumentController.findById);
  *       401:
  *         description: Token manquant ou invalide
  */
-monumentRouter.post("/", requireRole("guide", "admin"), monumentController.create);
+monumentRouter.post("/", monumentController.create);
 
 /**
  * @swagger
@@ -132,7 +131,7 @@ monumentRouter.post("/", requireRole("guide", "admin"), monumentController.creat
  *       404:
  *         description: Aucun monument avec cet identifiant
  */
-monumentRouter.put("/:id", requireRole("guide", "admin"), monumentController.update);
+monumentRouter.put("/:id", monumentController.update);
 
 /**
  * @swagger
@@ -160,7 +159,7 @@ monumentRouter.put("/:id", requireRole("guide", "admin"), monumentController.upd
  *       404:
  *         description: Aucun monument avec cet identifiant
  */
-monumentRouter.delete("/:id", requireRole("guide", "admin"), monumentController.remove);
+monumentRouter.delete("/:id", monumentController.remove);
 
 /**
  * @swagger

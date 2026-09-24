@@ -1,6 +1,6 @@
 import type { RequestHandler, Request } from "express";
 import { TokenPayload, verifyAccessToken } from "../services/token.service.js";
-import { unauthorizedError } from "../errors/http-error.js";
+import { forbiddenError, unauthorizedError } from "../errors/http-error.js";
 
 export const requireAuth: RequestHandler = (req, _res, next) => {
   const header = req.headers.authorization;
@@ -14,4 +14,12 @@ export const requireAuth: RequestHandler = (req, _res, next) => {
 export function currentUser(req: Request): TokenPayload {
   if (!req.user) throw unauthorizedError("Utilisateur non authentifié.");
   return req.user;
+}
+
+export function requireRole(...roles: TokenPayload["role"]): RequestHandler {
+  return (req, _res, next) => {
+    const user = currentUser(req);
+    if (!roles.includes(user.role)) throw forbiddenError("Cette action nécessite des droits administrateur.");
+    next();
+  };
 }
