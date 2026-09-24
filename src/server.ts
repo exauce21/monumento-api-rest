@@ -8,11 +8,15 @@ import "./models/monument.model.js";
 import "./models/user.model.js";
 import "./models/anecdote.model.js";
 import "./models/favorite.model.js";
+import { User } from "./models/user.model.js";
 
 import { initDatabase } from "./db/sequelize.js";
  
 // Initialize the database
 await initDatabase();
+if (env.ADMIN_USERNAME) {
+  await User.update({ role: "admin" }, { where: { username: env.ADMIN_USERNAME } });
+}
 
 const app = createApp();
 const server = http.createServer(app);
